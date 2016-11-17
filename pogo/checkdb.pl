@@ -98,8 +98,8 @@ if (!$pokemon_ids) {
 }
 
 my $dt_now=DateTime->now;
-$dt_now->set_time_zone("UTC");
-$dt_now->add(minutes => 1);
+$dt_now->set_time_zone("Europe/Berlin");
+#$dt_now->add(minutes => 1);
 my $date_from=(join ' ', $dt_now->ymd, $dt_now->hms);
 $dt_now->add(minutes => 30);
 my $date_to=(join ' ', $dt_now->ymd, $dt_now->hms);
@@ -123,6 +123,8 @@ Debug("log: $log");
 Debug("empf: $empf");
 Debug("mysql_db: $mysql_db");
 Debug("dt_now: $dt_now");
+Debug("date_to: $date_from");
+Debug("date_from: $date_to");
 Debug("hour: $hour");
 Debug("day: $day");
 Debug("pokemon_ids: $pokemon_ids");
@@ -130,13 +132,13 @@ Debug("#######################\n");
 
 
 if ($mysql) {
-	$sth = $db->selectall_arrayref("SELECT pokemon_id,disappear_time,latitude,longitude,encounter_id FROM pokemon WHERE pokemon_id in ($pokemon_ids) AND disappear_time >= DATE_SUB(NOW(), INTERVAL 118 MINUTE);") or die "SQL Error: $DBI::errstr\n";
+	$sth = $db->selectall_arrayref("SELECT pokemon_id,disappear_time,latitude,longitude,encounter_id FROM pokemon WHERE pokemon_id in ($pokemon_ids) AND disappear_time >= DATE_SUB(NOW(), INTERVAL 60 MINUTE);") or die "SQL Error: $DBI::errstr\n";
 } else {
 	$sth = $db->selectall_arrayref("SELECT pokemon_id,disappear_time,latitude,longitude FROM pokemon WHERE disappear_time BETWEEN \"$date_from\" AND \"$date_to\" AND pokemon_id in ($pokemon_ids);") or die "SQL Error: $DBI::errstr\n";
 }
 
 Debug("Searching now in DB..");
-$dt_now->set_time_zone("UTC");
+#$dt_now->set_time_zone("UTC");
 Debug("dt_now: $dt_now");
 
 foreach my $row (@$sth) {
@@ -149,7 +151,7 @@ foreach my $row (@$sth) {
 		#Debug("Found pokemon_id <$pokemon_id> - pokemon_name <$pokemon_name> -disappear_time <$dt_pokemon_despawn> - dt_now: <$dt_now> - latitude <$latitude> - longitude: <$longitude>");
 
 		#Fix timezone, UTC to GMT
-			$dt_pokemon_despawn->add( hours => 2 );
+		$dt_pokemon_despawn->add( hours => 1 );
 		my $time_despawn = (split /T/, $dt_pokemon_despawn)[1];
 
 		if ($mode eq "ticker") {
