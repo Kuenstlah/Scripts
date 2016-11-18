@@ -1,0 +1,34 @@
+# Path of everything
+path=/home/pi/pokemon/
+
+# Binds the webserver to current host ip
+host=`ip -4 addr | grep -oP '(?<=inet\s)\d+(\.\d+){3}'|grep -v 127`
+
+# Sets language
+locale=de
+
+# Sets the initial port - currently not required if ports are static
+#port=`ps aux|grep -v grep|egrep "$path/$map"|grep -oP "port\s+\K\w+"|uniq|sort|tail -n1`
+#[ "$port" -eq "$port" ] 2>/dev/null && port=$((port + 1)) || port=5000
+
+# If enabled, searches for directories named 'pogo_' in $path and tries git pull
+update_gitrepos=0
+
+# If enabled, captcha_api key is required
+captcha=0
+captcha_api=xxx
+
+#######################
+###### Locations ######
+#######################
+loc_brandenburgertor="Brandenburger Tor, Pariser Platz, Berlin"
+loc_brandenburgertor_park="52.5141,13.3631773"
+
+
+#######################
+######## Jobs #########
+#######################
+function call_jobs(){
+	start_map pogomap_tor 5000 "$loc_brandenburgertor" 
+	start_map pogomap_park 5001 "$loc_brandenburgertor_park" 
+}
