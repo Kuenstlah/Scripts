@@ -1,0 +1,7 @@
+use warnings;
+
+sub get_db_host { return "localhost" };
+sub get_db_user { return "root" };
+sub get_db_password { return "root" };
+
+1;
