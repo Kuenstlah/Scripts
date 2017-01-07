@@ -1,0 +1,12 @@
+xmlpath=/var/www/html/
+date_hm=`date "+%m-%d-%Y %H:%M"`
+
+google_api_key='GOOGLE_API_KEY'
+
+
+#######################
+#        Jobs         #
+function call_jobs(){
+        createcsv 'NAME' 'SOURCE_LOCATION' 'TARGET_LOCATION'
+}
+
