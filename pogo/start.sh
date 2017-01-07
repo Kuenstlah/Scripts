@@ -20,11 +20,11 @@ function start_map(){
 	steps="$3"
 	db="$4"
 	loc="$5"
+	echo "map: <$map> - port: <$port> - steps: <$steps> - db: <$db> - loc: <$loc>"
 	/bin/ps aux|grep -v grep|egrep -w "$loc|$path/$map" > /dev/null 2>&1
 	if [[ $? -eq 1 ]];then
-		/bin/echo -e "Map <$map>:\t\tStarting"
-		[ $captcha -eq 1 ] && /usr/bin/screen -d -S $map -m /bin/bash -c "$python_bin $path/$map/runserver.py --location '$loc' --port $port --host $host --db-type $db_type  --db-name $db --db-user $db_user --db-pass $db_pw  --db-host $db_host --db-port $db_port --gmaps-key $gmaps_key --status-name $map --step-limit $steps --locale de -cs -ck $captcha_api" \
-				|| /usr/bin/screen -d -S $map -m /bin/bash -c "$python_bin $path/$map/runserver.py --location '$loc' --port $port --host $host  --locale de"
+		[ $captcha -eq 1 ] && /usr/bin/screen -d -S $map -m /bin/bash -c "$python_bin $path/$map/runserver.py -speed --location $loc --port $port --host $host --db-type $db_type  --db-name $db --db-user $db_user --db-pass $db_pw  --db-host $db_host --db-port $db_port --gmaps-key $gmaps_key --status-name $map --step-limit $steps --locale de -cs -ck $captcha_api" \
+				|| /usr/bin/screen -d -S $map -m /bin/bash -c "$python_bin $path/$map/runserver.py -speed --location $loc --port $port --host $host  --locale de"
 	else
 		/bin/echo -e "Map <$map>:\t\tAlready running"
 	fi
